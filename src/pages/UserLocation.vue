@@ -1,0 +1,79 @@
+<template>
+    <section class="ui two column centered grid">
+        <div class="column">
+            <form class="ui segment large form">
+                <div class="ui message violet" v-show="error">{{error}}</div>
+                <div class="ui segment">
+                    <div class="field">
+                        <div class="ui right icon input large">
+                            <input type="text" placeholder="Enter your addres" v-model="address"/>
+                            <i 
+                                class="dot circle link icon"
+                                @click="LocatorButtonPressed"></i>
+                        </div>
+                    </div>
+                    <button class="ui button">GO</button>
+                </div>
+            </form>
+        </div>
+    </section>
+</template>
+
+<script>
+
+import axios from 'axios'
+
+export default{
+
+    data(){
+        return{
+            address: "",
+            error:""
+        }
+    },
+
+    methods:{
+        LocatorButtonPressed(){
+            if(navigator.geolocation){
+                navigator.geolocation.getCurrentPosition(position=>{
+                    this.getAddressFrom(position.coords.latitude, position.coords.longitude)
+                    },
+
+                error=>{
+                    this.error = error.message;
+                    //console.log(error.message);
+                });
+            }
+            else{
+                this.error = "Your Browser does not support Geolocation API"
+                console.log("Your Browser does not support Geolocation API");
+            }
+        },
+        getAddressFrom(lat,long){
+            axios.get("https://maps.googleapis.com/maps/api/geocode/json?latlng="
+             + lat + 
+             ","
+             + long 
+             + "&key=AIzaSyCwDJDT34hoFzuTKr60TLqMqrmqBO8Evjg")
+             .then(response => {
+                if(response.data.error_message){
+                    console.log(response.data.error_message);
+                }else{
+                    this.address =  response.data.results[0].formatted_address
+                    //console.log(response.data.results[0].formatted_address);
+                }
+            })
+            .catch(error=>{
+                console.log(error.message);
+            })
+        }
+    }
+};
+</script>
+
+<style>
+.ui.button, .dot.circle.icon{
+    background-color: #363062;
+    color: #FFFFFF;
+}
+</style>
