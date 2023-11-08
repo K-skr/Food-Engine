@@ -45,18 +45,19 @@ export default{
                 });
             }
             else{
-                this.error = "Your Browser does not support Geolocation API";
+                this.error = "Your Browser does not support Geolocation API"
                 console.log("Your Browser does not support Geolocation API");
             }
         },
         getAddressFrom(lat,long){
-            axios.get("https://api.mapbox.com/geocoding/v5/mapbox.places/"+lat+","+long+".json?access_token=pk.eyJ1IjoiYnJycnJycmxhbCIsImEiOiJjbG9tZHpoMzAybTBjMmpuMHY3Nnh1YzI1In0.XaNXfY5h3jshsi9Vg1jnOA")
+            axios.get(`https://api.mapbox.com/geocoding/v5/mapbox.places/${long},${lat}.json?access_token=pk.eyJ1IjoiYnJycnJycmxhbCIsImEiOiJjbG9tZHpoMzAybTBjMmpuMHY3Nnh1YzI1In0.XaNXfY5h3jshsi9Vg1jnOA`)
              .then(response => {
+                console.log(response.data);
                 if(response.data.error_message){
                     console.log(response.data.error_message);
                 }else{
-                        this.address =  response.data.results[0].formatted_address;
-                        console.log(response.data.results[0].formatted_address);
+                        this.address =  response.data.features[0].place_name;
+                        console.log(response.data.features[0].place_name);
                 }
             })
             .catch(error=>{
