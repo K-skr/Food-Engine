@@ -5,8 +5,11 @@
                 <div class="ui message violet" v-show="error">{{error}}</div>
                 <div class="field">
                     <div class="ui right icon input large">
-                        <input type="text" placeholder="Enter your address">
-                        <i class="dot circle link icon"></i>
+                        <input type="text" placeholder="Enter your address" v-model="address">
+                        <i 
+                            class="dot circle link icon"
+                            @click="LocatorButtonPressed"
+                            ></i>
                     </div>
                 </div>
 
@@ -22,10 +25,8 @@
                         <div class="field">
                             <select required>
                                 <option value="" disabled selected hidden>Proximity</option>
-                                <option value="5">5 KM</option>
-                                <option value="10">10 KM</option>
-                                <option value="15">15 KM</option>
-                                <option value="20">20 KM</option>
+                                <option value="5">locality</option>
+                                <option value="10">city</option>
                             </select>
                         </div>
                     </div>
@@ -81,6 +82,11 @@
                 .catch(error=>{
                     console.log(error.message);
                 })
+            },
+            FindCloseByButtonPressed(){
+                // let URL=`https://api.mapbox.com/geocoding/v5/mapbox.places/coffee.json?proximity=${this.long},${this.lat}&bbox=${},${},${},${}&
+                // access_token=pk.eyJ1IjoiYnJycnJycmxhbCIsImEiOiJjbG9tZHpoMzAybTBjMmpuMHY3Nnh1YzI1In0.XaNXfY5h3jshsi9Vg1jnOA`
+                // axios.get(URL)
             }
         }
     };
@@ -88,4 +94,7 @@
 
 <style>
     select:required:invalid { color: #C7C7CD  ; }
+    option{
+        color: black;
+    }
 </style>
