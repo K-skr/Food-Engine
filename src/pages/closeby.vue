@@ -1,43 +1,31 @@
 <template>
-    <div class="ui grid">
-        <div class="six wide column">
-            <form class="ui segment large form">
-                <div class="ui message violet" v-show="error">{{error}}</div>
-                <div class="field">
-                    <div class="ui right icon input large">
-                        <input type="text" placeholder="Enter your address">
-                        <i class="dot circle link icon"></i>
-                    </div>
-                </div>
-
-                <div class="field">
-                    <div class="two fields">
+    <div>
+        <section class="ui two column centered grid" style="position: relative;z-index:1">
+            <div class="column">
+                <form class="ui segment large form">
+                    <div class="ui message violet" v-show="error">{{error}}</div>
+                    <div class="ui segment">
                         <div class="field">
-                            <select required>
-                                <option value="" disabled selected hidden>Type</option>
-                                <option value="Restaurants">Restaurants</option>
-                            </select>
+                            <div class="ui right icon input large">
+                                <input type="text" placeholder="Enter your addres" v-model="address"/>
+                                <i 
+                                    class="dot circle link icon"
+                                    @click="LocatorButtonPressed"></i>
+                            </div>
                         </div>
-
-                        <div class="field">
-                            <select required>
-                                <option value="" disabled selected hidden>Proximity</option>
-                                <option value="5">5 KM</option>
-                                <option value="10">10 KM</option>
-                                <option value="15">15 KM</option>
-                                <option value="20">20 KM</option>
-                            </select>
-                        </div>
+                        <button class="ui button">GO</button>
                     </div>
-                </div>
-                <button class="ui button violet">Find CloseBy</button>
-            </form>
-        </div>
-        <div class="ten wide colun segment ui" ref="map"></div>
+                </form>
+            </div>
+        </section>
+    
+        <section id="map">
+    
+        </section>
     </div>
-</template>
-
-<script>
+    </template>
+    
+    <script>
     
     import axios from 'axios'
     
@@ -85,7 +73,18 @@
         }
     };
     </script>
-
-<style>
-    select:required:invalid { color: #C7C7CD  ; }
-</style>
+    
+    <style>
+    .ui.button, .dot.circle.icon{
+        background-color: #363062;
+        color: #FFFFFF;
+    }
+    #map{
+        background-color: lavender;
+        position: absolute;
+        top: 0;
+        right: 0;
+        left:0;
+        bottom: 0;
+    }
+    </style>
