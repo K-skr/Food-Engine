@@ -33,6 +33,16 @@
                 </div>
                 <button class="ui button violet" @click="FindCloseByButtonPressed">Find CloseBy</button>
             </form>
+            <div class="ui segment" style="max-height: 500px;overflow:scroll">
+                <div class="ui divided items">
+                    <div class="item">
+                        <div class="content">
+                            <div class="header">{{ this.places }}</div>
+                            <div class="meta">{{ this.category }}</div>
+                        </div>    
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="ten wide colun segment ui" ref="map"></div>
     </div>
@@ -53,7 +63,9 @@
                 bbox0:0,
                 bbox1:0,
                 bbox2:0,
-                bbox3:0
+                bbox3:0,
+                places:"",
+                category:""
             }
         },
     
@@ -97,12 +109,14 @@
             },
             FindCloseByButtonPressed(){
                 const URL=`https://api.mapbox.com/geocoding/v5/mapbox.places/restaurant.json?proximity=${this.long},${this.lat}
-                &bbox=${this.bbox0},${this.bbox1},${this.bbox2},${this.bbox3}
+                &bbox=${this.bbox0},${this.bbox1},${this.bbox2},${this.bbox3}&limit=10
                 &access_token=pk.eyJ1IjoiYnJycnJycmxhbCIsImEiOiJjbG9tZTJyZWQyeTh0MnFuMG5nZXRtdnp1In0.7GaDEG5S6wXt8i7ZyM6PKA`
-                console.log(URL)
                 axios.get(URL)
                 .then(response=>{
-                    console.log(response.data);
+                    console.log(response.data)
+                    this.places=response.data.features[0].place_name;
+                    this.category=response.data.features[0].properties.category;
+                    console.log(response.data.features[0].place_name)
                 })
                 .catch(error=>{
                     console.log(error.message);
