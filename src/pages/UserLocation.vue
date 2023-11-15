@@ -35,16 +35,16 @@
             </form>
             <div class="ui segment" style="max-height: 500px;overflow:scroll">
                 <div class="ui divided items">
-                    <div class="item">
+                    <div class="item" v-for="place in places">
                         <div class="content">
-                            <div class="header">{{ this.places }}</div>
-                            <div class="meta">{{ this.category }}</div>
+                            <div class="header">{{ place.place_name }}</div>
+                            <!-- <div class="meta">{{ this.category }}</div> -->
                         </div>    
                     </div>
                 </div>
             </div>
         </div>
-        <div class="ten wide colun segment ui" ref="map"></div>
+        <div class="ten wide column segment ui" ref="map"></div>
     </div>
 </template>
 
@@ -64,8 +64,8 @@
                 bbox1:0,
                 bbox2:0,
                 bbox3:0,
-                places:"",
-                category:""
+                places:[],
+                // category:""
             }
         },
     
@@ -89,7 +89,10 @@
                 }
             },
             getAddressFrom(lat,long){
-                axios.get(`https://api.mapbox.com/geocoding/v5/mapbox.places/${long},${lat}.json?access_token=pk.eyJ1IjoiYnJycnJycmxhbCIsImEiOiJjbG9tZTJyZWQyeTh0MnFuMG5nZXRtdnp1In0.7GaDEG5S6wXt8i7ZyM6PKA`)
+                axios.get(`https://api.mapbox.com/geocoding/v5/mapbox.places/
+                ${long},
+                ${lat}
+                .json?access_token=pk.eyJ1IjoiYnJycnJycmxhbCIsImEiOiJjbG9tZTJyZWQyeTh0MnFuMG5nZXRtdnp1In0.7GaDEG5S6wXt8i7ZyM6PKA`)
                  .then(response => {
                     console.log(response.data);
                     if(response.data.error_message){
@@ -113,10 +116,14 @@
                 &access_token=pk.eyJ1IjoiYnJycnJycmxhbCIsImEiOiJjbG9tZTJyZWQyeTh0MnFuMG5nZXRtdnp1In0.7GaDEG5S6wXt8i7ZyM6PKA`
                 axios.get(URL)
                 .then(response=>{
-                    console.log(response.data)
-                    this.places=response.data.features[0].place_name;
-                    this.category=response.data.features[0].properties.category;
-                    console.log(response.data.features[0].place_name)
+                    console.log(response.data.features.place_name),
+                    this.places=response.data.features;
+                    for(var i=0;i<=6;i++){
+                        console.log(response.data.features[i].place_name);
+                    }
+                    console.log(this.places);
+                    // this.category=response.data.features[0].properties.category;
+                    //console.log(response.data.features[0].place_name)
                 })
                 .catch(error=>{
                     console.log(error.message);
