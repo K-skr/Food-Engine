@@ -33,18 +33,18 @@
                 </div>
                 <button class="ui button violet" @click="FindCloseByButtonPressed">Find CloseBy</button>
             </form>
-            <div class="ui segment" style="max-height: 500px;overflow:scroll">
+            <div v-bind:class="['ui segment', 'hide']" style="max-height: 500px;overflow:auto" id="divss">
                 <div class="ui divided items">
                     <div class="item" v-for="place in places">
                         <div class="content">
-                            <div class="header">{{ place.place_name }}</div>
-                            <!-- <div class="meta">{{ this.category }}</div> -->
+                            <div class="header">{{ place.text }}</div>
+                            <div class="meta">{{ place.properties.category }}</div>
                         </div>    
                     </div>
                 </div>
             </div>
         </div>
-        <div class="ten wide column segment ui" ref="map"></div>
+        <div class="ten wide column segment ui" id="map"></div>
     </div>
 </template>
 
@@ -65,7 +65,7 @@
                 bbox2:0,
                 bbox3:0,
                 places:[],
-                // category:""
+                categories:[]
             }
         },
     
@@ -94,13 +94,14 @@
                 ${lat}
                 .json?access_token=pk.eyJ1IjoiYnJycnJycmxhbCIsImEiOiJjbG9tZTJyZWQyeTh0MnFuMG5nZXRtdnp1In0.7GaDEG5S6wXt8i7ZyM6PKA`)
                  .then(response => {
+                    console.log("your readable address: ")
                     console.log(response.data);
                     if(response.data.error_message){
                         console.log(response.data.error_message);
                     }else{
                             this.address =  response.data.features[0].place_name;
                             console.log(response.data.features[0].place_name);
-                            console.log(this.bbox0=response.data.features[2].bbox[0],
+                            console.log("bbox values: ",this.bbox0=response.data.features[2].bbox[0],
                             this.bbox1=response.data.features[2].bbox[1],
                             this.bbox2=response.data.features[2].bbox[2],
                             this.bbox3=response.data.features[2].bbox[3])
@@ -116,18 +117,64 @@
                 &access_token=pk.eyJ1IjoiYnJycnJycmxhbCIsImEiOiJjbG9tZTJyZWQyeTh0MnFuMG5nZXRtdnp1In0.7GaDEG5S6wXt8i7ZyM6PKA`
                 axios.get(URL)
                 .then(response=>{
-                    console.log(response.data.features.place_name),
                     this.places=response.data.features;
-                    for(var i=0;i<=6;i++){
-                        console.log(response.data.features[i].place_name);
-                    }
+                    console.log("nearby resto array: ");
                     console.log(this.places);
+                    this.categories=response.data.features.properties;
                     // this.category=response.data.features[0].properties.category;
                     //console.log(response.data.features[0].place_name)
+                    this.AddLocationToMaps();
                 })
                 .catch(error=>{
                     console.log(error.message);
                 })
+                const divs = document.getElementById("divss")
+                if (divs.classList.contains("hide")){
+                    divs.classList.remove("hide");
+                }
+            },
+            AddLocationToMaps(){
+                mapboxgl.accessToken = 'pk.eyJ1IjoiYnJycnJycmxhbCIsImEiOiJjbG9tZHpoMzAybTBjMmpuMHY3Nnh1YzI1In0.XaNXfY5h3jshsi9Vg1jnOA';
+                const map = new mapboxgl.Map({
+                container: 'map', // container ID
+                // Choose from Mapbox's core styles, or make your own style with Mapbox Studio
+                style: 'mapbox://styles/mapbox/streets-v12', // style URL
+                center: [this.long, this.lat], // starting position [lng, lat]
+                zoom: 15 // starting zoom
+                });
+                // this.places.forEach(place=>{
+                //     const lat = place.geometry.location.lat;
+                //     const long = place.geometry.location.long;
+
+                //     let marker = new
+                // })
+                const geojson = {
+                    type: 'FeatureCollection',
+                    features: [
+                        {
+                            type: 'Feature',
+                            geometry: {
+                                type: 'Point',
+                                coordinates: [response.data.features[0].geometry.coordinates[0], response.data.features[0].geometry.coordinates[1]]
+                            },
+                            properties: {
+                                title: 'Mapbox',
+                                description: 'Washington, D.C.'
+                            }
+                        },
+                        {
+                            type: 'Feature',
+                            geometry: {
+                                type: 'Point',
+                                coordinates: [-122.414, 37.776]
+                            },
+                            properties: {
+                                title: 'Mapbox',
+                                description: 'San Francisco, California'
+                            }
+                        }
+                    ]
+                };
             }
         }
     };
@@ -137,5 +184,11 @@
     select:required:invalid { color: #C7C7CD  ; }
     option{
         color: black;
+    }
+    .hide{
+        visibility:hidden !important;
+    }
+    #map{
+        background-color: lavender;
     }
 </style>
