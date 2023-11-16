@@ -44,7 +44,7 @@
                 </div>
             </div>
         </div>
-        <div class="ten wide column segment ui" id="map"></div>
+        <div v-bind:class="['ten wide column segment ui', 'hide']" id="map" ></div>
     </div>
 </template>
 
@@ -134,51 +134,98 @@
                 }
             },
             AddLocationToMaps(){
-                mapboxgl.accessToken = 'pk.eyJ1IjoiYnJycnJycmxhbCIsImEiOiJjbG9tZHpoMzAybTBjMmpuMHY3Nnh1YzI1In0.XaNXfY5h3jshsi9Vg1jnOA';
-                const map = new mapboxgl.Map({
-                container: 'map', // container ID
-                // Choose from Mapbox's core styles, or make your own style with Mapbox Studio
-                style: 'mapbox://styles/mapbox/streets-v12', // style URL
-                center: [this.long, this.lat], // starting position [lng, lat]
-                zoom: 15 // starting zoom
-                });
-                // this.places.forEach(place=>{
-                //     const lat = place.geometry.location.lat;
-                //     const long = place.geometry.location.long;
-
-                //     let marker = new
-                // })
-                const geojson = {
-                    type: 'FeatureCollection',
-                    features: [
+                mapboxgl.accessToken = 'pk.eyJ1IjoiYnJycnJycmxhbCIsImEiOiJjbG9tZHpoMzAybTBjMmpuMHY3Nnh1YzI1In0.XaNXfY5h3jshsi9Vg1jnOA'; 
+                const yourLngLat ={
+                    'type': 'FeatureCollection',
+                    'features':[
                         {
-                            type: 'Feature',
-                            geometry: {
-                                type: 'Point',
-                                coordinates: [response.data.features[0].geometry.coordinates[0], response.data.features[0].geometry.coordinates[1]]
+                            'type':'Feature',
+                            'geometry': {
+                                'type':'point',
+                                'coordinates':[this.long, this.lat]
                             },
-                            properties: {
-                                title: 'Mapbox',
-                                description: 'Washington, D.C.'
-                            }
-                        },
-                        {
-                            type: 'Feature',
-                            geometry: {
-                                type: 'Point',
-                                coordinates: [-122.414, 37.776]
-                            },
-                            properties: {
-                                title: 'Mapbox',
-                                description: 'San Francisco, California'
+                            'properties': {
+                                'title': 'UserLocation',
+                                //'description': 'Washington, D.C.'
                             }
                         }
                     ]
-                };
+                }
+                // const geojson = {
+                //     'type': 'FeatureCollection',
+                //     'features': [
+                //         {
+                //             'type': 'Feature',
+                //             'geometry': {
+                //                 'type': 'Point',
+                //                 'coordinates': [this.long, this.lat]
+                //             },
+                //             'properties': {
+                //                 'title': 'UserLocation',
+                //                 'description': 'Washington, D.C.'
+                //             }
+                //         },
+                //         {
+                //             'type': 'Feature',
+                //             'geometry': {
+                //                 'type': 'Point',
+                //                 'coordinates': [-122.414, 37.776]
+                //             },
+                //             'properties': {
+                //                 'title': 'Mapbox',
+                //                 'description': 'San Francisco, California'
+                //             }
+                //         }
+                //     ]
+                // };
+                
+                const map = new mapboxgl.Map({
+                container: 'map', // container ID
+                // Choose from Mapbox's core styles, or make your own style with Mapbox Studio
+                style: 'mapbox://styles/brrrrrrlal/clp0ys6xn019001pb1pqs2u5n', // style URL
+                center: [this.long, this.lat], // starting position [lng, lat]
+                zoom: 15 // starting zoom
+                });
+                
+                for (const feature of yourLngLat.features) {
+                    // create a HTML element for each feature
+                    const ell = document.createElement('div');
+                    ell.className = 'pmarker';
+                
+                    new mapboxgl.Marker(ell)
+                    .setLngLat(feature.geometry.coordinates)
+                    .setPopup(
+                        new mapboxgl.Popup({ offset: 25 }) // add popups
+                        .setHTML(
+                            `<h3>${feature.text}</h3><p>${feature.properties.description}</p>`
+                        )
+                    )
+                    .addTo(map);
+                }
+
+                for (const feature of this.places) {
+                    // create a HTML element for each feature
+                    const el = document.createElement('div');
+                    el.className = 'marker';
+                
+                    new mapboxgl.Marker(el)
+                    .setLngLat(feature.geometry.coordinates)
+                    .setPopup(
+                        new mapboxgl.Popup({ offset: 25 }) // add popups
+                        .setHTML(
+                            `<h3>${feature.text}</h3><p>${feature.properties.category}</p>`
+                        )
+                    )
+                    .addTo(map);
+                }
+                const divs = document.getElementById("map")
+                if (divs.classList.contains("hide")){
+                    divs.classList.remove("hide");
+                }
             }
         }
     };
-    </script>
+</script>
 
 <style>
     select:required:invalid { color: #C7C7CD  ; }
@@ -188,7 +235,21 @@
     .hide{
         visibility:hidden !important;
     }
-    #map{
-        background-color: lavender;
+    .pmarker {
+        background-image: url('location.png');
+        background-size: cover;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        cursor: pointer;
+    }
+
+    .marker {
+        background-image: url('mapbox-icon.png');
+        background-size: cover;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        cursor: pointer;
     }
 </style>
