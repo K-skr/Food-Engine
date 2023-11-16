@@ -152,6 +152,7 @@
                     ]
                 }
                 
+                
                 const map = new mapboxgl.Map({
                 container: 'map', // container ID
                 // Choose from Mapbox's core styles, or make your own style with Mapbox Studio
