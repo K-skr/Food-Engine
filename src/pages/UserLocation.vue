@@ -236,7 +236,7 @@
         visibility:hidden !important;
     }
     .pmarker {
-        background-image: url('location.png');
+        background-image: url('https://cdn-icons-png.flaticon.com/128/3710/3710297.png');
         background-size: cover;
         width: 50px;
         height: 50px;
@@ -245,7 +245,7 @@
     }
 
     .marker {
-        background-image: url('mapbox-icon.png');
+        background-image: url('https://cdn-icons-png.flaticon.com/128/3866/3866544.png');
         background-size: cover;
         width: 50px;
         height: 50px;
