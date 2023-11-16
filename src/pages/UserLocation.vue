@@ -134,7 +134,7 @@
                 }
             },
             AddLocationToMaps(){
-                mapboxgl.accessToken = 'pk.eyJ1IjoiYnJycnJycmxhbCIsImEiOiJjbG9tZHpoMzAybTBjMmpuMHY3Nnh1YzI1In0.XaNXfY5h3jshsi9Vg1jnOA'; 
+                mapboxgl.accessToken = 'pk.eyJ1IjoiYnJycnJycmxhbCIsImEiOiJjbG9tZTJyZWQyeTh0MnFuMG5nZXRtdnp1In0.7GaDEG5S6wXt8i7ZyM6PKA'; 
                 const yourLngLat ={
                     'type': 'FeatureCollection',
                     'features':[
@@ -151,33 +151,6 @@
                         }
                     ]
                 }
-                // const geojson = {
-                //     'type': 'FeatureCollection',
-                //     'features': [
-                //         {
-                //             'type': 'Feature',
-                //             'geometry': {
-                //                 'type': 'Point',
-                //                 'coordinates': [this.long, this.lat]
-                //             },
-                //             'properties': {
-                //                 'title': 'UserLocation',
-                //                 'description': 'Washington, D.C.'
-                //             }
-                //         },
-                //         {
-                //             'type': 'Feature',
-                //             'geometry': {
-                //                 'type': 'Point',
-                //                 'coordinates': [-122.414, 37.776]
-                //             },
-                //             'properties': {
-                //                 'title': 'Mapbox',
-                //                 'description': 'San Francisco, California'
-                //             }
-                //         }
-                //     ]
-                // };
                 
                 const map = new mapboxgl.Map({
                 container: 'map', // container ID
