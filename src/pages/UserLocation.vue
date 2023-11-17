@@ -1,12 +1,20 @@
 <template>
-    <div class="ui grid">
+    <div class="vertical">
+        <h1 class="ui header">
+            <img class="ui image" id="logo" src="https://i.imgur.com/76siGbq.png">
+            <div class="content" id="title">
+                Food Engine
+            </div>
+        </h1>
+        <div class="ui grid">
         <div class="six wide column">
             <form class="ui segment large form">
-                <div class="ui message violet" v-show="error">{{error}}</div>
+                <div class="ui message" id="enterbutton" v-show="error">{{error}}</div>
                 <div class="field">
-                    <div class="ui right icon input large">
-                        <input type="text" placeholder="Enter your address" v-model="address">
+                    <div class="ui right icon input large" :class="{loading:spinner}">
+                        <input name = "address" type="text" placeholder="Press The Locator icon ---->" readonly="readonly" v-model="address" ref="addressInput">
                         <i 
+                            id="enterbutton"
                             class="dot circle link icon"
                             @click="LocatorButtonPressed"
                             ></i>
@@ -26,12 +34,11 @@
                             <select required>
                                 <option value="" disabled selected hidden>Proximity</option>
                                 <option value="5">locality</option>
-                                <option value="10">city</option>
                             </select>
                         </div>
                     </div>
                 </div>
-                <button class="ui button violet" @click="FindCloseByButtonPressed">Find CloseBy</button>
+                <button class="ui button" id="enterbutton" @click="FindCloseByButtonPressed">Find CloseBy</button>
             </form>
             <div v-bind:class="['ui segment', 'hide']" style="max-height: 500px;overflow:auto" id="divss">
                 <div class="ui divided items">
@@ -45,6 +52,7 @@
             </div>
         </div>
         <div v-bind:class="['ten wide column segment ui', 'hide']" id="map" ></div>
+        </div>
     </div>
 </template>
 
@@ -53,11 +61,12 @@
     import axios from 'axios'
     
     export default{
-    
+        
         data(){
             return{
                 address: "",
                 error:"",
+                spinner:false,
                 lat:0,
                 long:0,
                 bbox0:0,
@@ -68,18 +77,21 @@
                 categories:[]
             }
         },
-    
         methods:{
+
             LocatorButtonPressed(){
+                this.spinner=true;
                 if(navigator.geolocation){
                     navigator.geolocation.getCurrentPosition(position=>{
+                        this.spinner=false;
                         this.getAddressFrom(position.coords.latitude, position.coords.longitude)
                         this.lat=position.coords.latitude;
                         this.long=position.coords.longitude;
                     },
     
                     error=>{
-                        this.error = error.message;
+                        this.error = "Locator is unable to find your address. Please type in your address.";
+                        this.spinner = false;
                         //console.log(error.message);
                     });
                 }
@@ -199,6 +211,7 @@
             }
         }
     };
+    
 </script>
 
 <style>
@@ -225,5 +238,19 @@
         height: 50px;
         border-radius: 50%;
         cursor: pointer;
+    }
+
+    #title{
+       
+        font-family: 'Sora', sans-serif;
+        font-size: 50px;
+        color: #ED7D31;
+    }
+    #logo{
+        height: 100px;
+        width: 100px;
+    }
+    #enterbutton{
+        background-color: #ED7D31;
     }
 </style>
