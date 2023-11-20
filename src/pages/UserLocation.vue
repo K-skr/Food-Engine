@@ -183,7 +183,7 @@
                     .setPopup(
                         new mapboxgl.Popup({ offset: 25 }) // add popups
                         .setHTML(
-                            `<h3>${feature.text}</h3><p>${feature.properties.description}</p>`
+                            `<h3>Your Location</h3><p>${this.address}</p>`
                         )
                     )
                     .addTo(map);
