@@ -6,7 +6,7 @@
                 <div class="titleB">
                 <center>
                     <h1 :class="['head']">
-                    <img class="ui image" id="logo" src="https://i.imgur.com/76siGbq.png">
+                    <img class="ui image" id="logoA" src="https://i.imgur.com/76siGbq.png">
                     <div class="content" id="title">
                         Food Engine
                     </div>
@@ -50,7 +50,7 @@
     top: 10%;
 }
 
-#logo{
+#logoA{
     height: 200px;
     width: 200px;
 }
