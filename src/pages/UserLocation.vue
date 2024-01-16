@@ -1,6 +1,6 @@
 <template>
     <div class="vertical">
-        <h1 class="ui header">
+        <h1 :class="['ui header','headB']">
             <img class="ui image" id="logo" src="https://i.imgur.com/76siGbq.png">
             <div class="content" id="title">
                 Food Engine
@@ -12,7 +12,8 @@
                 <div class="ui message" id="enterbutton" v-show="error">{{error}}</div>
                 <div class="field">
                     <div class="ui right icon input large" :class="{loading:spinner}">
-                        <input name = "address" type="text" placeholder="Press The Locator icon ---->" readonly="readonly" v-model="address" ref="addressInput">
+                        <input name = "address" type="text" readonly="readonly" placeholder="Press The Locator icon ---->" v-model="address" ref="addressInput"  autocomplete="off">
+                        
                         <i 
                             id="enterbutton"
                             class="dot circle link icon"
@@ -60,6 +61,7 @@
     
     import axios from 'axios'
     
+
     export default{
         
         data(){
@@ -90,7 +92,7 @@
                     },
     
                     error=>{
-                        this.error = "Locator is unable to find your address. Please type in your address.";
+                        this.error = "Locator is unable to find your address. Please try again.";
                         this.spinner = false;
                         //console.log(error.message);
                     });
@@ -209,12 +211,19 @@
                     divs.classList.remove("hide");
                 }
             }
+        
+        
+        
         }
     };
     
 </script>
 
 <style>
+    .headB{
+        background-color: rgba(207, 167, 114, 1);
+    }
+
     select:required:invalid { color: #C7C7CD  ; }
     option{
         color: black;
