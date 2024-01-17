@@ -34,7 +34,7 @@
                         <div class="field">
                             <select required>
                                 <option value="" disabled selected hidden>Proximity</option>
-                                <option value="5">locality</option>
+                                <option value="5">City</option>
                             </select>
                         </div>
                     </div>
@@ -127,7 +127,6 @@
             },
             FindCloseByButtonPressed(){
                 const URL=`https://api.mapbox.com/geocoding/v5/mapbox.places/restaurant.json?proximity=${this.long},${this.lat}
-                &bbox=${this.bbox0},${this.bbox1},${this.bbox2},${this.bbox3}&limit=10
                 &access_token=pk.eyJ1IjoiYnJycnJycmxhbCIsImEiOiJjbG9tZTJyZWQyeTh0MnFuMG5nZXRtdnp1In0.7GaDEG5S6wXt8i7ZyM6PKA`
                 axios.get(URL)
                 .then(response=>{
